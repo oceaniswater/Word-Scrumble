@@ -40,7 +40,7 @@ class TableViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return usedWords.count
     }
     
@@ -75,9 +75,34 @@ class TableViewController: UITableViewController {
         present(ac, animated: true)
     }
     
+    // added submit function
     func submit(_ answer: String) {
+        let lowerAnswer = answer.lowercased()
         
+        if isPossible(word: lowerAnswer) {
+            if isOriginal(word: lowerAnswer) {
+                if isReal(word: lowerAnswer) {
+                    usedWords.insert(answer, at: 0)
+                    
+                    let indexPath = IndexPath(row: 0, section: 0)
+                    tableView.insertRows(at: [indexPath], with: .automatic)
+                }
+            }
+        }
     }
+    
+    func isPossible(word: String) -> Bool {
+        return true
+    }
+    
+    func isOriginal(word: String) -> Bool {
+        return true
+    }
+
+    func isReal(word: String) -> Bool {
+        return true
+    }
+
 
 }
 
