@@ -75,9 +75,12 @@ class TableViewController: UITableViewController {
         present(ac, animated: true)
     }
     
-    // added submit function
+    // added submit function with word checking
     func submit(_ answer: String) {
         let lowerAnswer = answer.lowercased()
+        
+        let errorTitle: String
+        let errorMessage: String
         
         if isPossible(word: lowerAnswer) {
             if isOriginal(word: lowerAnswer) {
@@ -86,9 +89,24 @@ class TableViewController: UITableViewController {
                     
                     let indexPath = IndexPath(row: 0, section: 0)
                     tableView.insertRows(at: [indexPath], with: .automatic)
+                    return
+                } else {
+                    errorTitle = "Word not recognized"
+                    errorMessage = "You can't just make them up, you know!"
                 }
+            } else {
+                errorTitle = "Word already used"
+                errorMessage = "Be more original!"
             }
+        } else {
+            guard let title = title else { return }
+            errorTitle = "Word not possible"
+            errorMessage = "You can't spell that word from \(title.lowercased())."
         }
+        let ac = UIAlertController(title: errorTitle, message: errorMessage, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "Ok", style: .default))
+        
+        present(ac, animated: true)
     }
     
     func isPossible(word: String) -> Bool {
