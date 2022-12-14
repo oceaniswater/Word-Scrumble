@@ -16,6 +16,9 @@ class TableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // added add button with closure (see below)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(promtForAnswer))
+        
         // find file
         if let startWordsURL = Bundle.main.url(forResource: "start", withExtension: "txt") {
             // create string from file using try? keyword
@@ -51,7 +54,30 @@ class TableViewController: UITableViewController {
         
         
     }
-
+    // added closure for add button
+    @objc func promtForAnswer() {
+        // created controller
+        let ac = UIAlertController(title: "Enter answer", message: nil, preferredStyle: .alert)
+        // added TextField
+        ac.addTextField()
+        
+        // created action button
+        let submitAction = UIAlertAction(title: "Submit", style: .default) {
+            // trying to avoid strong reference
+            [weak self, weak ac] action in
+            // checked textField is not nil
+            guard let answer = ac?.textFields?[0].text else { return }
+            // use button Submit using answer and method out of closure
+            self?.submit(answer)
+        }
+        
+        ac.addAction(submitAction)
+        present(ac, animated: true)
+    }
+    
+    func submit(_ answer: String) {
+        
+    }
 
 }
 
